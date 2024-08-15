@@ -1,0 +1,55 @@
+const int dot = 500;   
+const int dash = 2000; 
+const int letter = 500;  
+const int words = 1400;    
+const int buttonPin = 6;
+bool buttonPressed = false;
+bool lastButtonState = HIGH;
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(buttonPin, INPUT_PULLUP); 
+}
+void loop() {
+  bool currentButtonState = digitalRead(buttonPin);
+
+  if (lastButtonState == HIGH && currentButtonState == LOW) {
+    buttonPressed = true;
+  }
+  lastButtonState = currentButtonState;
+
+  if (buttonPressed) {
+    MorseCode("Jasnoor");
+    buttonPressed = false; 
+  } else {
+    MorseCode("Jasnoor");
+    delay(words); 
+  }
+}
+void  MorseCode(String name) {
+  for (int i = 0; i < name.length(); i++) {
+    char letter = toupper(name[i]);
+    switch (letter) {
+      case 'J': Morse(".---"); break;
+      case 'A': Morse(".-"); break;
+      case 'S': Morse("..."); break;
+      case 'N': Morse("-."); break;
+      case 'O': Morse("---"); break;
+      case 'R': Morse(".-."); break;
+    }
+    delay(letter); 
+  }
+}
+void Morse(String code) {
+  for (int i = 0; i < code.length(); i++) {
+    if (code[i] == '.') {
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(dot);
+      digitalWrite(LED_BUILTIN, LOW);
+    } else if (code[i] == '-') {
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(dash);
+      digitalWrite(LED_BUILTIN, LOW);
+    }
+    delay(dot);
+  }
+}
